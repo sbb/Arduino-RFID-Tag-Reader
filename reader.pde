@@ -6,38 +6,51 @@
 
 */
 
+#include <SoftwareSerial.h>
+
+
 char uniqueId[13] = "";
+
+#define rxPin 8
+#define txPin 9
 
 void setup() {
   Serial.begin(2400);
+  
+  pinMode(2, OUTPUT);
+  digitalWrite(2, LOW); // Activate RFID Reader
+  
   Serial.println("RFID Reader Ready");
 }
 
-void loop() {  
-  readTag();  
+void loop() {
+  SoftwareSerial RFID = SoftwareSerial(rxPin, txPin);
+  RFID.begin(2400);
+  
+  readTag(RFID); 
   
   delay(1000);
 }
 
-void readTag() {
+void readTag(SoftwareSerial RFID) {
   //   Output from RFID reader is a 12-byte ASCII String
   //   1      => Start Byte = 0x0A or 10 - line feed
   //   2 - 11 => Unique ID Digit 1 - Digit 10
   //   12     => Stop Byte  = 0x0D or 13 - carriage return
-  if (Serial.available() > 0) {
-    uniqueId[0] = Serial.read();
-    uniqueId[1] = Serial.read();
-    uniqueId[2] = Serial.read();
-    uniqueId[3] = Serial.read();
-    uniqueId[4] = Serial.read();
-    uniqueId[5] = Serial.read();
-    uniqueId[6] = Serial.read();
-    uniqueId[7] = Serial.read();
-    uniqueId[8] = Serial.read();
-    uniqueId[9] = Serial.read();
-    uniqueId[10] = Serial.read();
-    uniqueId[11] = Serial.read();
-    uniqueId[12] = Serial.read();
+  if (true) {
+    uniqueId[0] = RFID.read();
+    uniqueId[1] = RFID.read();
+    uniqueId[2] = RFID.read();
+    uniqueId[3] = RFID.read();
+    uniqueId[4] = RFID.read();
+    uniqueId[5] = RFID.read();
+    uniqueId[6] = RFID.read();
+    uniqueId[7] = RFID.read();
+    uniqueId[8] = RFID.read();
+    uniqueId[9] = RFID.read();
+    uniqueId[10] = RFID.read();
+    uniqueId[11] = RFID.read();
+    uniqueId[12] = RFID.read();
   }
   
   Serial.flush();
