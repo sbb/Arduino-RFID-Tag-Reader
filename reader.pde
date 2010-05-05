@@ -1,3 +1,11 @@
+/*
+  Arduino RFID Tag Reader
+  
+  Created 2010-05-05
+  by Andrew Bowerman <bowerman.andrew@gmail.com>
+
+*/
+
 char uniqueId[13] = "";
 
 void setup() {
@@ -12,10 +20,10 @@ void loop() {
 }
 
 void readTag() {
-  // Output from RFID reader is a 12-byte ASCII String
-  // 1      => Start Byte = 0x0A or 10 - line feed
-  // 2 - 11 => Unique ID Digit 1 - Digit 10
-  // 12     => Stop Byte  = 0x0D or 13 - carriage return
+  //   Output from RFID reader is a 12-byte ASCII String
+  //   1      => Start Byte = 0x0A or 10 - line feed
+  //   2 - 11 => Unique ID Digit 1 - Digit 10
+  //   12     => Stop Byte  = 0x0D or 13 - carriage return
   if (Serial.available() > 0) {
     uniqueId[0] = Serial.read();
     uniqueId[1] = Serial.read();

@@ -1,0 +1,11 @@
+Arduino RFID Tag Reader
+
+Created 2010-05-05
+by Andrew Bowerman <bowerman.andrew@gmail.com>
+
+--
+a Simple RFID Tag reader sketch for Arduino
+
+Using Parallax RFID Reader - Module (#28140)
+
+http://www.parallax.com/dl/docs/prod/audiovis/RFID-Reader-v1.2.pdf
