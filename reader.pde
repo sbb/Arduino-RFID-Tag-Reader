@@ -7,19 +7,24 @@
 */
 
 #include <SoftwareSerial.h>
+#include <LiquidCrystal.h>
 
+LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
 
 char uniqueId[13] = "";
 
-#define rxPin 8
-#define txPin 9
+#define rxPin 2
+#define txPin 3
 
 void setup() {
   Serial.begin(2400);
   
-  pinMode(2, OUTPUT);
-  digitalWrite(2, LOW); // Activate RFID Reader
+  lcd.begin(16, 2);
+    
+  pinMode(5, OUTPUT);
+  digitalWrite(5, LOW); // Activate RFID Reader
   
+  LCDreadyMessage();
   Serial.println("RFID Reader Ready");
 }
 
@@ -65,36 +70,67 @@ boolean validTag() {
     Serial.print("Valid RFID Tag :) ");
     Serial.println(uniqueId);
     
-    cardTag();
-    roundTag();
+    soundOne();
+    LCDprintTag();
+    
+    andrewTag();
     
     uniqueId[0] = '\0'; // Clear uniqueId
     return true;
-  }
-}
-
-boolean roundTag() {
-  // Round Tag = 0415DB2BE6
-  if (uniqueId[1] == '0'
-   && uniqueId[2] == '4'
-   && uniqueId[3] == '1'
-   && uniqueId[4] == '5'
-   && uniqueId[5] == 'D'
-   && uniqueId[6] == 'B'
-   && uniqueId[7] == '2'
-   && uniqueId[8] == 'B'
-   && uniqueId[9] == 'E'
-   && uniqueId[10] == '6'
-   ){
+  } else {
     soundTwo();
-    Serial.println("Round Tag Found!");
-    
-    uniqueId[0] = '\0'; // Clear uniqueId
-    return true;
   }
 }
 
-boolean cardTag() {
+void LCDreadyMessage(){
+  lcd.setCursor(0, 0);
+  lcd.print("-[RFID  Reader]-");
+  lcd.setCursor(0, 1);
+  lcd.print("Ready");
+  lcd.blink();
+}
+
+void LCDprintTag(){
+  lcd.setCursor(0, 1);
+  lcd.print(" ");
+  lcd.setCursor(0, 1);
+  lcd.print(uniqueId);
+  delay(2000);
+  lcd.clear();
+  LCDreadyMessage();
+}
+
+// Blink LED
+void blinkLight() {
+  digitalWrite(4, HIGH);
+  delay(100);
+  digitalWrite(4, LOW);
+  delay(100);
+  digitalWrite(4, HIGH);
+  delay(100);
+  digitalWrite(4, LOW);
+}
+
+// Tones
+void soundOne() {
+  tone(6, 698, 200);
+  delay(100);
+  tone(6, 784, 200);
+}
+
+void soundTwo() {
+  tone(6, 392, 200);
+  delay(100);
+  tone(6, 294, 200);
+}
+
+void soundThree() {
+  tone(6, 1200, 200);
+  delay(100);
+  tone(6, 1600, 200);
+}
+
+boolean andrewTag() {
   // Card Tag = 0F03039CFA
   if (uniqueId[1] == '0'
    && uniqueId[2] == 'F'
@@ -108,40 +144,20 @@ boolean cardTag() {
    && uniqueId[10] == 'A'
    ){
     
-    soundOne();
-    Serial.println("Card Tag Found!");
+    soundThree();
+    
+    lcd.setCursor(0, 1);
+    lcd.print(" ");
+    lcd.setCursor(0, 1);
+    lcd.print("Hi Andrew! :)");
+    delay(2000);
+    lcd.clear();
+    LCDreadyMessage();
+    
+    Serial.println("Andrew Tag Found!");
     uniqueId[0] = '\0'; // Clear uniqueId
     return true;
   }
 }
 
-// Blink LED
-void blinkLight() {
-  digitalWrite(3, HIGH);
-  delay(100);
-  digitalWrite(3, LOW);
-  delay(100);
-  digitalWrite(3, HIGH);
-  delay(100);
-  digitalWrite(3, LOW);
-}
-
-// Tones
-void soundOne() {
-  tone(7, 698, 200);
-  delay(100);
-  tone(7, 784, 200);
-}
-
-void soundTwo() {
-  tone(7, 392, 200);
-  delay(100);
-  tone(7, 294, 200);
-}
-
-void soundThree() {
-  tone(7, 1200, 200);
-  delay(100);
-  tone(7, 1600, 200);
-}
 
