@@ -73,16 +73,6 @@ boolean validTag() {
   }
 }
 
-void blinkLight() {
-  digitalWrite(3, HIGH);
-  delay(100);
-  digitalWrite(3, LOW);
-  delay(100);
-  digitalWrite(3, HIGH);
-  delay(100);
-  digitalWrite(3, LOW);
-}
-
 boolean roundTag() {
   // Round Tag = 0415DB2BE6
   if (uniqueId[1] == '0'
@@ -125,6 +115,18 @@ boolean cardTag() {
   }
 }
 
+// Blink LED
+void blinkLight() {
+  digitalWrite(3, HIGH);
+  delay(100);
+  digitalWrite(3, LOW);
+  delay(100);
+  digitalWrite(3, HIGH);
+  delay(100);
+  digitalWrite(3, LOW);
+}
+
+// Tones
 void soundOne() {
   tone(7, 698, 200);
   delay(100);
@@ -135,5 +137,11 @@ void soundTwo() {
   tone(7, 392, 200);
   delay(100);
   tone(7, 294, 200);
+}
+
+void soundThree() {
+  tone(7, 1200, 200);
+  delay(100);
+  tone(7, 1600, 200);
 }
 
